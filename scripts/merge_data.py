@@ -6,7 +6,8 @@ def merge_data(path: str, start: int, end: int) -> pd.DataFrame:
     for year in range(start, end+1):
         filenames.extend(glob.glob(os.path.join(path, f"savant_data_*_{year}.csv")))
 
-    monthly_data = [pd.read_csv(f) for f in filenames]
+    cols = ["pitch_type", "game_date", "player_name", "batter", "events", "zone", "stand", "p_throws", "balls", "strikes", "launch_speed", "launch_angle", "at_bat_number"]
+    monthly_data = [pd.read_csv(f)[cols].rename(columns={'batter':'batter_id'}) for f in filenames]
     data = pd.concat(monthly_data)
     return data
 
