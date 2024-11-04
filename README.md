@@ -1,9 +1,9 @@
 # modelling-max-ev
 
-## Data Source
+## Data Collection
 All data obtained from Baseball Savant's Statcast Search tool at baseball_savant.com/statcast_search. Query parameters:
 - Pitch result: In play
 - Player type: Batter
 - Season type: Regular Season
 
-Queries were split up by season & month to avoid server timeout issues.
+Separate queries by month to avoid timeouts, and save in form savant_data_MMM_YY.csv. Run data_merging.py to merge the files into one dataset.
