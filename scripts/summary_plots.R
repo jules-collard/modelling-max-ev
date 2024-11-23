@@ -19,8 +19,20 @@ data %>%
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
         axis.text.y = element_blank())
+# ggsave("plots/evHistogram.png")
 
-
+data %>%
+  mutate(bin = cut(launch_speed, breaks = seq(0.5, 127.5, 1), labels = seq(1, 127, 1))) %>%
+  group_by(bin) %>%
+  summarise(wOBACON = sum(woba_value) / sum(woba_denom)) %>%
+  mutate(across(bin, as.numeric)) %>%
+  ggplot(aes(x = bin, y = wOBACON)) +
+  geom_smooth(se = FALSE) +
+  labs(x = "Launch Speed (mph)",
+        title = "Importance of Exit Velocity on Batted Ball Outcomes",
+        subtitle = "MLB Balls in Play 2017-2024") +
+  theme_bw()
+# ggsave("plots/ev_woba.png")
 
 # Player
 data %>%
