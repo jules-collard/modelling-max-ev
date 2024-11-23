@@ -33,3 +33,31 @@ load_data <- function(filename, write_names=FALSE) {
   }
   return(data)
 }
+
+get_bm <- function(data, block_size=15) {
+  require(fExtremes)
+  bm <- blockMaxima(data$launch_speed, block=block_size)
+  head(bm, -1) # Filter out outlier small blocks
+}
+
+gev_fit <- function(bm) {
+  require(ismev)
+  gev.fit(bm, show=FALSE)
+}
+
+get_mu <- function(fit) {
+  unlist(fit$mle[1])
+}
+
+get_sigma <- function(fit) {
+  unlist(fit$mle[2])
+}
+
+get_xi <- function(fit) {
+  unlist(fit$mle[3])
+}
+
+ksTest <- function(quantiles) {
+  test <- ks.test(unlist(quantiles), "punif", min = 0, max = 1)
+  test$p.value
+}
