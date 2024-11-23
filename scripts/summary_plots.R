@@ -13,14 +13,14 @@ data %>%
   ggplot(aes(x = bin, y=pitches, fill = wOBACON)) +
   geom_bar(stat = "identity") +
   scale_fill_distiller(palette = "Reds", direction = 1) +
-  labs(x = "Launch Speed (mph)")
+  labs(x = "Launch Speed (mph)", title = "Histogram of Exit Velocities",
+        subtitle = "MLB Balls in Play 2017-2024") +
+  theme_bw() +
+  theme(axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank())
 
-data %>%
-  ggplot(aes(x=launch_speed, fill = ..woba_value..)) +
-  geom_histogram(binwidth = 2, col = "white") +
-  labs(x="Exit Velocity (mph)", y="Count",
-      title="Histogram of Exit Velocities", subtitle = "MLB Balls in Play 2017-2024") +
-  scale_fill_continuous(low="yellow", high="red")
+
 
 # Player
 data %>%

@@ -39,11 +39,16 @@ playerData <- data %>%
         mu = map_dbl(gev, get_mu),
         sigma = map_dbl(gev, get_sigma),
         xi = map_dbl(gev, get_xi)) %>%
-  arrange(desc(mu))
+  select(-data) %>%
+  unnest(bm) %>%
+  rowwise() %>%
+  mutate(trans = pgev(bm, xi = xi, mu = mu, beta = sigma))
 
-bm <- blockMaxima(data_judge$launch_speed, block=20)
-gev <- fevd(bm, type="GEV", method="MLE")
-ci(gev, type="return.level", return.period = 20, method="proflik", xrange=c(110, 125))
+playerData %>% filter(batter_id == 592450) %>%
+  ggplot(aes(x=trans)) +
+  geom_histogram()
+
+names %>% filter(player_name == "Judge, Aaron")
 
 #Kramer-Von Mises, anderson-dalins
 library(evir)
@@ -51,3 +56,12 @@ params <- distill(gev)[1:3] # mu sigma xi
 transformed <- pgev(bm, xi= params[3], mu=params[1], sigma=params[2])
 hist(transformed)
 # Should be U[0,1]
+t <- playerData$trans[[102]]
+hist(t)
+
+pgev()
+
+# Test for uniformity
+# Estimating upper endpoint
+# Age as covariate - record max likelihood and compare between models 2*diff likelihood 
+# GEV upper bound:  x < mu - sigma/xi - sec 3 slide 4
