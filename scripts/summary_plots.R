@@ -4,7 +4,7 @@ source("scripts/setup.r")
 data <- load_data("data/savant_data_2017_2024.csv", write_names = TRUE)
 names <- read_csv("data/batter_names.csv")
 
-# Overall EV Histogram
+# Overall EV Histogram with wOBACON
 data %>%
   mutate(bin = cut(launch_speed, breaks = seq(2.5, 127.5, 5), labels = seq(5, 125, 5))) %>%
   group_by(bin) %>%
@@ -27,7 +27,7 @@ data %>%
   summarise(wOBACON = sum(woba_value) / sum(woba_denom)) %>%
   mutate(across(bin, as.numeric)) %>%
   ggplot(aes(x = bin, y = wOBACON)) +
-  geom_smooth(se = FALSE) +
+  geom_line() +
   labs(x = "Launch Speed (mph)",
         title = "Importance of Exit Velocity on Batted Ball Outcomes",
         subtitle = "MLB Balls in Play 2017-2024") +
