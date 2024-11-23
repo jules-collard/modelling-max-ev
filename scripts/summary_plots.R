@@ -21,6 +21,7 @@ data %>%
         axis.text.y = element_blank())
 # ggsave("plots/evHistogram.png")
 
+# wOBACON vs EV Line Graph
 data %>%
   mutate(bin = cut(launch_speed, breaks = seq(0.5, 127.5, 1), labels = seq(1, 127, 1))) %>%
   group_by(bin) %>%
@@ -34,24 +35,19 @@ data %>%
   theme_bw()
 # ggsave("plots/ev_woba.png")
 
-# Player
+# Aaron Judge & Luis Arraez
 data %>%
-  filter(batter_id == 592450) %>% # Aaron Judge
+  filter(batter_id == 592450 | batter_id == 650333) %>%
+  left_join(names, by = join_by(batter_id), keep = FALSE) %>%
   ggplot(aes(x=launch_speed, fill = after_stat(x))) +
-  geom_histogram(binwidth = 2, col = "white") +
-  labs(x="Exit Velocity (mph)", y="Count",
+  facet_wrap(~player_name.x) +
+  geom_histogram(binwidth = 2, col = "white", show.legend = FALSE) +
+  labs(x="Exit Velocity (mph)", y="Balls in Play",
       title="Histogram of Exit Velocities",
-      subtitle=get_name(names, 592450)) +
-  scale_fill_continuous(low="yellow", high="red")
-
-data %>%
-  filter(batter_id == 650333) %>% # Luis Arraez
-  ggplot(aes(x=launch_speed, fill = after_stat(x))) +
-  geom_histogram(binwidth = 2, col = "white") +
-  labs(x="Exit Velocity (mph)", y="Count",
-      title="Histogram of Exit Velocities",
-      subtitle=get_name(names, 650333)) +
-  scale_fill_continuous(low="yellow", high="red")
+      subtitle="2017-2024") +
+  scale_fill_continuous(low="yellow", high="red") +
+  theme_bw()
+# ggsave("plots/playerComparison.png")
 
 # Overlaid
 data %>%
@@ -74,7 +70,3 @@ data %>%
 
 acf(data %>% filter(batter_id == 592450) %>% select(launch_speed),
     lag.max = 30, plot = FALSE)
-
-data %>% filter(year(game_date) == 2024) %>%
-  ggplot(aes(y = as_factor(woba_value), x = launch_speed)) +
-  geom_violin()
