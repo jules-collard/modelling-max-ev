@@ -27,7 +27,12 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Why Exit Velocity Matters}
+\begin{frame}[allowframebreaks]{Why Exit Velocity Matters}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{plots/ev_woba.png}
+        \label{fig:ev_woba}
+    \end{figure}
     \begin{figure}
         \centering
         \includegraphics[width=\linewidth]{plots/evHistogram.png}
@@ -35,22 +40,24 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}{Why Exit Velocity Matters}
+\begin{frame}{Player Distributions}
+    Differing player types \& styles lead to different player-level EV distributions:
     \begin{figure}
         \centering
-        \includegraphics[width=\linewidth]{plots/ev_woba.png}
-        \label{fig:ev_woba}
+        \includegraphics[width=0.5\linewidth]{}
+        \caption{Caption}
+        \label{fig:enter-label}
     \end{figure}
 \end{frame}
 
 \begin{frame}{Existing Exit Velocity Metrics}
 \begin{itemize}
     \item Average EV
-    \item Best Speed
+    \item Best Speed \cite{tangoBestSpeed}
     \begin{itemize}
         \item Average of top 50\% hardest-hit balls
     \end{itemize}
-    \item EV Percentiles
+    \item EV Percentiles \cite{clemensEV}
     \begin{itemize}
         \item EV80, EV90 \& EV95
     \end{itemize}
@@ -62,7 +69,10 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{References}
+\section{A New Approach}
+
+
+\begin{frame}[allowframebreaks]
     \printbibliography
 \end{frame}
 \end{document}
