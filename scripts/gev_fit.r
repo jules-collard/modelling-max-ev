@@ -2,7 +2,7 @@ library(tidyverse)
 library(fExtremes)
 library(extRemes)
 library(ismev)
-source("scripts/setup.r")
+source("scripts/utils.r")
 
 data <- load_data("data/savant_data_2017_2024.csv", write_names = TRUE)
 names <- read_csv("data/batter_names.csv")
@@ -19,7 +19,7 @@ playerModels <- data %>%
         xi = map_dbl(gev, get_xi)) %>%
   select(-data)
   
- playerBM <- playerModels %>% 
+playerBM <- playerModels %>% 
   unnest(bm) %>%
   rowwise() %>%
   mutate(trans = pgev(bm, xi = xi, mu = mu, beta = sigma)) %>%
@@ -33,23 +33,26 @@ ggplot(data = playerModels, mapping = aes(x = mu)) +
   geom_histogram(fill="lightblue", col="black") +
   theme_bw() +
   labs(title = "Distribution of Location Parameter for GEV Fit",
-        subtitle = "MLB Players with >= 300 BBEs, 2017-2024",
+        subtitle = "MLB Players with >= 300 BBEs, 2015-2024",
         x = "Location (mu)", y = "Count")
+ggsave("plots/location.png")
 
 ggplot(data = playerModels, mapping = aes(x = sigma)) +
   geom_histogram(fill="lightblue", col="black") +
   theme_bw() +
   labs(title = "Distribution of Scale Parameter for GEV Fit",
-        subtitle = "MLB Players with >= 300 BBEs, 2017-2024",
+        subtitle = "MLB Players with >= 300 BBEs, 2015-2024",
         x = "Scale (sigma)", y = "Count")
+ggsave("plots/scale.png")
 
 ggplot(data = playerModels, mapping = aes(x = xi)) +
-  geom_histogram(fill="lightblue", col="black") +
+  geom_histogram(fill="lightblue", col="black", center = 0.5) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   theme_bw() +
   labs(title = "Distribution of Shape Parameter for GEV Fit",
-        subtitle = "MLB Players with >= 300 BBEs, 2017-2024",
+        subtitle = "MLB Players with >= 300 BBEs, 2015-2024",
         x = "Shape (xi)", y = "Count")
+ggsave("plots/shape.png")
 
 ggplot(data = playerBM, mapping = aes(x = p)) +
   geom_histogram(fill="lightblue", col="black", breaks = seq(0, 1, 0.05)) +
@@ -58,6 +61,7 @@ ggplot(data = playerBM, mapping = aes(x = p)) +
   labs(title = "p-values for Kolmogorov-Smirnov Test for Uniformity",
       subtitle = "Inverse Quantile Transform on GEV Fits",
       y = "Count")
+ggsave("plots/kstest.png")
 
 #Kramer-Von Mises, anderson-dalins
 library(evir)
