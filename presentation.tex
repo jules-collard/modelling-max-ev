@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage[style=numeric]{biblatex}
 \usepackage{url}
+\usepackage{caption}
 
 \addbibresource{references.bib}
 
@@ -30,13 +31,12 @@
 \begin{frame}[allowframebreaks]{Why Exit Velocity Matters}
     \begin{figure}
         \centering
-        \includegraphics[width=\linewidth]{plots/ev_woba.png}
-        \label{fig:ev-woba}
+        \includegraphics[width=0.85\linewidth]{plots/ev_woba.png}
     \end{figure}
+    
     \begin{figure}
         \centering
-        \includegraphics[width=\linewidth]{plots/evHistogram.png}
-        \label{fig:ev-histogram}
+        \includegraphics[width=0.85\linewidth]{plots/evHistogram.png}
     \end{figure}
 \end{frame}
 
@@ -45,7 +45,6 @@
     \begin{figure}
         \centering
         \includegraphics[width=0.85\linewidth]{plots/playerComparison.png}
-        \label{fig:player-comp}
     \end{figure}
 \end{frame}
 
@@ -69,7 +68,48 @@
 \end{frame}
 
 \section{A New Approach}
-\frame{Block Maxima}
+\begin{frame}{Modelling EV}
+    \begin{itemize}
+        \item Distributions of EV vary by player
+        \item We do not learn anything about a player's talent from their slowly-hit batted balls \cite{tangoBestSpeed}.
+        \item Information lies in the upper quantiles of a player's EV distribution. 
+    \end{itemize}
+    Extreme Value Theory!
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Block Maxima}
+    Fitted GEV to each player's block maxima (15 BIP):
+    \begin{figure}
+        \includegraphics[width=0.49\linewidth]{plots/location.png}
+        \hfill
+        \includegraphics[width=0.49\linewidth]{plots/scale.png}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.85\linewidth]{plots/shape.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Assessing Model Fit}
+    For each model, we can evaluate GEV CDF at each block maximum to transform to standard uniform.
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.85\linewidth]{plots/kstest.png}
+    \end{figure}
+\end{frame}
+
+\section{Applications}
+\begin{frame}{Correlation with Results}
+    Use GEV fit to calculate a $k$-block return level for each player:
+\end{frame}
+
+\begin{frame}{Predictive Value}
+    
+\end{frame}
+
+\begin{frame}{Variability}
+    
+\end{frame}
 
 \begin{frame}[allowframebreaks]
     \printbibliography
