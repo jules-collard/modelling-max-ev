@@ -6,9 +6,9 @@ data <- load_data("data/savant_data_2015_2024.csv", write_names = TRUE)
 names <- read_csv("data/batter_names.csv")
 
 # Get EV Metrics for each player by season
-player_seasons <- get_player_seasons(data, 250, 10)
+player_seasons <- get_player_seasons(data, 250)
 season_pairs <- get_season_pairs(player_seasons, 2015, 2024)
-playerModels <- get_player_models(data, 250) %>%
+playerModels <- get_player_models(data, 250, 10) %>%
   select(-c(bm, gev))
 
 correlations <- season_pairs %>%
@@ -52,11 +52,28 @@ correlations %>%
           x = "Statistic", y = "Correlation to Next Year maxEV")
 ggsave("plots/maxev_next_correlation.png")
 
-changes <- season_pairs %>%
+# Add return_level to x-y columns
+season_pairs.rl <- season_pairs %>%
   inner_join(playerModels, by = join_by(batter_id == batter_id, year.x == year)) %>%
   rename(return_level.x = return_level) %>%
   inner_join(playerModels, by = join_by(batter_id == batter_id, year.y == year)) %>%
-  rename(return_level.y = return_level) %>% # Get return levels for each year
+  rename(return_level.y = return_level)
+
+ggplot(season_pairs.rl, aes(x = return_level.x, y = return_level.y)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = sd(playerModels$return_level),
+              linetype = "dashed", col = "blue") +
+  geom_abline(slope = 1, intercept = -sd(playerModels$return_level),
+              linetype = "dashed", col = "red") +
+  labs(title = "Year-to-Year Variation in 50 BIP EV Return Level",
+       subtitle = "MLB 2015-2024, min. 250 BIP",
+       x = "50 BIP EV Return Level",
+       y = "Next Year 50 BIP EV Return Level",
+       caption = "Dashed Lines represent variation of +/- 1 SD") +
+  theme_bw()
+ggsave("plots/return_level_stability.png")
+
+changes <- season_pairs.rl %>%
   ungroup() %>%
   select(best_speed.x:ev95.x, return_level.x, best_speed.y:ev95.y, return_level.y) %>%
   mutate(rownum = row_number()) %>% # for pivot_wider later
