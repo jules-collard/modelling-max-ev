@@ -78,7 +78,7 @@
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Block Maxima}
-    Fitted GEV to each player's block maxima (15 BIP):
+    Fitted GEV to each player's 10 BIP block-maxima:
     \begin{figure}
         \includegraphics[width=0.49\linewidth]{plots/location.png}
         \hfill
@@ -100,15 +100,32 @@
 
 \section{Applications}
 \begin{frame}{Correlation with Results}
-    Use GEV fit to calculate a $k$-block return level for each player:
+    Use GEV fit to calculate a $5$-block (i.e. 50 BIP) return level for each player:
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.85\linewidth]{plots/woba_correlation.png}
+    \end{figure}
 \end{frame}
 
 \begin{frame}{Predictive Value}
-    
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.85\linewidth]{plots/woba_next_correlation.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Predicting maxEV}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.85\linewidth]{plots/maxev_next_correlation.png}
+    \end{figure}
 \end{frame}
 
 \begin{frame}{Variability}
-    
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.85\linewidth]{plots/stability.png}
+    \end{figure}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
