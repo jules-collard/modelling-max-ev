@@ -102,7 +102,7 @@ get_season_pairs <- function(player_seasons, start_season, end_season) {
   season_pairs
 }
 
-get_player_models <- function(data, min_bip=250, block_size=10) {
+get_player_models <- function(data, min_bip=250, block_size=10, filter=TRUE) {
   require(dplyr)
   player_models <- data %>%
     group_by(batter_id, year) %>%
@@ -116,4 +116,9 @@ get_player_models <- function(data, min_bip=250, block_size=10) {
           xi = map_dbl(gev, get_xi),
           return_level = get_return_level(5, mu, sigma, xi)) %>%
     select(-data)
+  if (filter) {
+    return(player_models %>% filter(xi >= -1)) # Unstable MLE estimation below this range
+  } else {
+    return(player_models)
+  }
 }

@@ -67,6 +67,3 @@ data %>%
   ggplot(aes(x=at_bat, y=launch_speed)) +
   geom_segment(aes(xend=at_bat), yend=0) +
   scale_y_continuous(limits=c(100, 120))
-
-acf(data %>% filter(batter_id == 592450) %>% select(launch_speed),
-    lag.max = 30, plot = FALSE)

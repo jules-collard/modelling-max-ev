@@ -4,7 +4,7 @@ source("scripts/utils.r")
 data <- load_data("data/savant_data_2015_2024.csv", write_names = TRUE)
 names <- read_csv("data/batter_names.csv")
 
-playerModels <- get_player_models(data, 250, 10)
+playerModels <- get_player_models(data, 250, 10, filter=FALSE)
   
 playerBM <- playerModels %>% 
   unnest(bm) %>%

@@ -39,22 +39,7 @@ data_nested <- data %>%
   filter(n >= 250) %>%
   nest()
 
-player_seasons <- data %>%
-  mutate(year = as_factor(year(game_date))) %>%
-  group_by(batter_id, year) %>%
-  mutate(med_ev = median(launch_speed),
-         top50 = if_else(launch_speed >= med_ev, 1, 0)) %>% # For best speed
-  group_by(batter_id, year) %>%
-  summarise(balls_in_play = n(),
-            wOBACON = sum(woba_value) / sum(woba_denom),
-            best_speed = sum(launch_speed * top50) / sum(top50),
-            avgEV = mean(launch_speed),
-            maxEV = max(launch_speed),
-            ev80 = quantile(launch_speed, 0.8),
-            ev90 = quantile(launch_speed, 0.9),
-            ev95 = quantile(launch_speed, 0.95)) %>%
-  filter(balls_in_play >= 250)
-
+player_seasons <- get_player_seasons(data, 250)
 season_pairs <- get_season_pairs(player_seasons, 2015, 2024)
 
 results <- tuning_matrix(data_nested, season_pairs, block_sizes = c(5, 10, 15, 20), k = c(5, 10, 15, 20))
